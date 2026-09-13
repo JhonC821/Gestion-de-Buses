@@ -26,14 +26,15 @@ public class CrudCliente {
     private final String NOMBRE_ENTIDAD = "cliente";
 
     //sql
-    private final String INSERTAR_CLIENTE = "INSERT INTO " + NOMBRE_ENTIDAD + "(dpi_cliente, nit_cliente, nombre_completo, apellido_completo, telefono, usuario, contrasenia) VALUES(?,?,?,?,?,?,?)";
-    private final String ACTUALIZAR_CLIENTE = "UPDATE " + NOMBRE_ENTIDAD + " SET nit_cliente = ?, nombre_completo = ?, apellido_completo = ?, telefono = ?, usuario = ?, contrasenia = ? WHERE dpi_cliente = ?";
+    private final String INSERTAR_CLIENTE = "INSERT INTO " + NOMBRE_ENTIDAD + "(dpi_cliente, nit_cliente, nombre_completo, apellido_completo, telefono, usuario, contrasenia, direccion) VALUES(?,?,?,?,?,?,?,?)";
+    private final String ACTUALIZAR_CLIENTE = "UPDATE " + NOMBRE_ENTIDAD + " SET nit_cliente = ?, nombre_completo = ?, apellido_completo = ?, telefono = ?, usuario = ?, contrasenia = ?, direccion = ? WHERE dpi_cliente = ?";
     private final String ACTUALIZAR_SALDO_CLIENTE = "UPDATE " + NOMBRE_ENTIDAD + " SET saldo = ? WHERE dpi_cliente = ?";
     private final String ACTUALIZAR_ESTADO_CLIENTE = "UPDATE " + NOMBRE_ENTIDAD + " SET estado = ? WHERE dpi_cliente = ?";
 
     //sql queries
     private final String CONSULTAR_TODO_CLIENTE = "SELECT * FROM " + NOMBRE_ENTIDAD;
     private final String CONSULTAR_POR_DPI = "SELECT * FROM "+NOMBRE_ENTIDAD+" WHERE dpi_cliente = ?";
+    private final String CONSULTAR_POR_USUARIO_CONTRASENIA = "SELECT *FROM "+NOMBRE_ENTIDAD+" WHERE usuario = ? AND contrasenia = ?";
 
     public CrudCliente() {
 
@@ -52,6 +53,7 @@ public class CrudCliente {
             insertar.setString(5, cliente.getTelefono());
             insertar.setString(6, cliente.getUsuario());
             insertar.setString(7, cliente.getContrasenia());
+            insertar.setString(8, cliente.getDireccion());
 
             int filas = insertar.executeUpdate();
             System.out.println("Se inserto: " + filas);
@@ -78,7 +80,8 @@ public class CrudCliente {
             actualizar.setString(4, cliente.getTelefono());
             actualizar.setString(5, cliente.getUsuario());
             actualizar.setString(6, cliente.getContrasenia());
-            actualizar.setString(7, cliente.getDpiCliente());
+            actualizar.setString(7, cliente.getDireccion());
+            actualizar.setString(8, cliente.getDpiCliente());
             actualizar.executeUpdate();
 
         } catch (SQLException ex) {
@@ -144,6 +147,42 @@ public class CrudCliente {
         return listaClientes;
 
     }
+    
+        public Optional<Cliente> consultarPorUsuarioContrasenia(String usuario, String contrasenia) throws AccesoDeDatosException{
+        
+        Cliente posibleCliente = null;
+        
+        String sql = CONSULTAR_POR_USUARIO_CONTRASENIA;
+        
+        try(Connection conexion = Conexion.getInstance().getConexion();
+            PreparedStatement consultar = conexion.prepareStatement(sql)) {
+            consultar.setString(1, usuario);
+            consultar.setString(2, contrasenia);
+            
+            ResultSet clienteObtenido = consultar.executeQuery();
+            
+            while(clienteObtenido.next()){
+                posibleCliente = new Cliente();
+                posibleCliente.setDpiCliente(clienteObtenido.getString("dpi_cliente"));
+                posibleCliente.setNitCliente(clienteObtenido.getString("nit_cliente"));
+                posibleCliente.setNombreCompleto(clienteObtenido.getString("nombre_completo"));
+                posibleCliente.setApellidoCompleto(clienteObtenido.getString("apellido_completo"));
+                posibleCliente.setTelefono(clienteObtenido.getString("telefono"));
+                posibleCliente.setSaldo(clienteObtenido.getDouble("saldo"));
+                posibleCliente.setUsuario(clienteObtenido.getString("usuario"));
+                posibleCliente.setContrasenia(clienteObtenido.getString("contrasenia"));
+                posibleCliente.setEstado(clienteObtenido.getBoolean("estado"));
+                posibleCliente.setDireccion(clienteObtenido.getString("direccion"));
+
+            }
+            
+        } catch (SQLException ex) {
+            throw new AccesoDeDatosException("Error al consultar el Usuario y contrasenia ", ex);
+            
+        }
+        
+        return Optional.ofNullable(posibleCliente);
+    }
 
     public Optional<Cliente> consultarPorDpi(Cliente cliente) throws AccesoDeDatosException {
 
@@ -155,17 +194,22 @@ public class CrudCliente {
              PreparedStatement consultar = conexion.prepareStatement(sql)) {
             consultar.setString(1, dpi);
             ResultSet clienteObtenido = consultar.executeQuery();
+            
+            while(clienteObtenido.next()){
+                posibleCliente = new Cliente();
+                posibleCliente.setDpiCliente(clienteObtenido.getString("dpi_cliente"));
+                posibleCliente.setNitCliente(clienteObtenido.getString("nit_cliente"));
+                posibleCliente.setNombreCompleto(clienteObtenido.getString("nombre_completo"));
+                posibleCliente.setApellidoCompleto(clienteObtenido.getString("apellido_completo"));
+                posibleCliente.setTelefono(clienteObtenido.getString("telefono"));
+                posibleCliente.setSaldo(clienteObtenido.getDouble("saldo"));
+                posibleCliente.setUsuario(clienteObtenido.getString("usuario"));
+                posibleCliente.setContrasenia(clienteObtenido.getString("contrasenia"));
+                posibleCliente.setEstado(clienteObtenido.getBoolean("estado"));
+                posibleCliente.setDireccion(clienteObtenido.getString("direccion"));
 
-            posibleCliente = new Cliente();
-            posibleCliente.setDpiCliente(clienteObtenido.getString("dpi_cliente"));
-            posibleCliente.setNitCliente(clienteObtenido.getString("nit_cliente"));
-            posibleCliente.setNombreCompleto(clienteObtenido.getString("nombre_completo"));
-            posibleCliente.setApellidoCompleto(clienteObtenido.getString("apellido_completo"));
-            posibleCliente.setTelefono(clienteObtenido.getString("telefono"));
-            posibleCliente.setSaldo(clienteObtenido.getDouble("saldo"));
-            posibleCliente.setUsuario(clienteObtenido.getString("usuario"));
-            posibleCliente.setContrasenia(clienteObtenido.getString("contrasenia"));
-            posibleCliente.setEstado(clienteObtenido.getBoolean("estado"));
+            }
+
 
         } catch (SQLException ex) {
 
@@ -189,8 +233,11 @@ public class CrudCliente {
             cliente.setUsuario(clienteObtenido.getString("usuario"));
             cliente.setContrasenia(clienteObtenido.getString("contrasenia"));
             cliente.setEstado(clienteObtenido.getBoolean("estado"));
+            cliente.setDireccion(clienteObtenido.getString("direccion"));
             listaClientes.add(cliente);
         }
         return listaClientes;
     }
+    
+
 }

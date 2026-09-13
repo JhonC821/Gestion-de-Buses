@@ -20,6 +20,7 @@ public class Cliente {
     private Double saldo;
     private String usuario;
     private String contrasenia;
+    private String direccion;
     private boolean estado;
 
     public Cliente() {
@@ -108,5 +109,15 @@ public class Cliente {
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+    
+    
 
 }

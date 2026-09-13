@@ -4,9 +4,6 @@
  */
 package com.mycompany.servlets;
 
-import com.mycompany.Cruds.CrudCliente;
-import com.mycompany.DTOs.Cliente;
-import com.mycompany.Excepciones.AccesoDeDatosException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,14 +11,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Optional;
 
 /**
  *
  * @author jonat
  */
-@WebServlet(name = "Logueo", urlPatterns = {"/Logueo"})
-public class Logueo extends HttpServlet {
+@WebServlet(name = "RegistroBus", urlPatterns = {"/RegistroBus"})
+public class RegistroBus extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,15 +36,15 @@ public class Logueo extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Logueo</title>");
+            out.println("<title>Servlet RegistroBus</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Logueo at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet RegistroBus at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -61,30 +57,7 @@ public class Logueo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        CrudCliente crudCliente = new CrudCliente();
-        
-        String nombre = request.getParameter("usuario");
-        String contrasenia = request.getParameter("contrasenia");
-        
-        try {
-            Optional<Cliente> cliente = crudCliente.consultarPorUsuarioContrasenia(nombre, contrasenia);
-        
-            if(cliente.isPresent()){
-                // pasarle el objeto a la otra ventana
-                request.setAttribute("usuario", cliente.get());
-                request.getRequestDispatcher("/VistaRegistroBus.jsp").forward(request, response);
-            } else{
-               //notificar que valio verga 
-               request.setAttribute("error", "Usuario o contraseña incorrecta");
-               request.getRequestDispatcher("index.jsp").forward(request, response);
-            }
-            
-        } catch (AccesoDeDatosException ex) {
-            
-            System.out.println(ex.getMessage() +" " + ex.getCause().getMessage());
-        }
-        
+        processRequest(request, response);
     }
 
     /**

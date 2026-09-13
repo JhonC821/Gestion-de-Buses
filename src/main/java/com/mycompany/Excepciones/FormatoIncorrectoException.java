@@ -13,4 +13,6 @@ public class FormatoIncorrectoException extends Exception{
     public FormatoIncorrectoException(String mensaje, Throwable causa){
         super(mensaje, causa);
     }
+    
+    
 }

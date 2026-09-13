@@ -18,7 +18,7 @@
             <artifactId>jakarta.jakartaee-api</artifactId>
             <version>${jakartaee}</version>
             <scope>provided</scope>
-        </dependency>
+        </dependency>  
     </dependencies>
     
     <build>
@@ -39,4 +39,5 @@
             </plugin>
         </plugins>
     </build>
+    
 </project>

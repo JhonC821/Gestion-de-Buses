@@ -26,7 +26,7 @@ public class CrudSucursal {
     private final String NOMBRE_ENTIDAD = "sucursal";
 
     //sql
-    private final String INSERTAR_SUCURSAL = "INSERT INTO " + NOMBRE_ENTIDAD + "(codigo_sucursal, nombre_sucursal, direccion) VALUES(?,?,?,?)";
+    private final String INSERTAR_SUCURSAL = "INSERT INTO " + NOMBRE_ENTIDAD + "(codigo_sucursal, nombre_sucursal, direccion) VALUES(?,?,?)";
     private final String ACTUALIZAR_SUCURSAL = "UPDATE " + NOMBRE_ENTIDAD + " SET nombre_sucursal = ?, direccion = ? WHERE codigo_sucursal = ?";
     private final String ACTUALIZAR_ESTADO_SUCURSAL = "UPDATE " + NOMBRE_ENTIDAD + " SET estado = ? WHERE codigo_sucursal = ?";
 
@@ -54,7 +54,6 @@ public class CrudSucursal {
         } catch (SQLException ex) {
 
             throw new AccesoDeDatosException("Error al insertar Sucursal: ", ex);
-
         }
 
     }

@@ -31,6 +31,14 @@ public class Conexion {
     }
 
     public Connection getConexion() throws SQLException  {
+        
+        
+      //  try {
+        //    Class.forName("com.mysql.cj.jdbc.Driver");
+        //} catch (ClassNotFoundException e) {
+         //   throw new SQLException("No se encontró el driver de MySQL", e);
+        //}
+        
         return conexionActual = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
     }
      

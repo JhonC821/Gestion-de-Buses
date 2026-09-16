@@ -10,6 +10,7 @@ import com.mycompany.POJOs.Personal;
 import com.mycompany.Enums.CargoPersonal;
 import com.mycompany.Excepciones.AccesoDeDatosException;
 import com.mycompany.Excepciones.RegistroExistenteException;
+import com.mycompany.POJOs.Cliente;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,6 +38,7 @@ public class CrudPersonal {
     private final String CONSULTAR_TODO_PERSONAL = "SELECT * FROM " + NOMBRE_ENTIDAD;
     private final String CONSULTAR_POR_DPI = "SELECT * FROM "+NOMBRE_ENTIDAD+" WHERE dpi_personal = ?";
     private final String CONSULTAR_POR_CARGO = "SELECT *FROM " + NOMBRE_ENTIDAD + " WHERE cargo = ? AND estado = TRUE";
+    private final String CONSULTAR_POR_USUARIO_CONTRASENIA ="SELECT * FROM " +NOMBRE_ENTIDAD + " WHERE usuario = ? AND contrasenia = ?";
     
     
     public CrudPersonal(){
@@ -131,6 +133,40 @@ public class CrudPersonal {
         
         return listaPersonal;
     
+    }
+    
+    public Optional<Personal> consultarPorUsuarioContrasenia(String usuario, String contrasenia) throws AccesoDeDatosException{
+        
+        Personal posiblePersonal = null;
+        
+        String sql = CONSULTAR_POR_USUARIO_CONTRASENIA;
+        
+        try(Connection conexion = Conexion.getInstance().getConexion();
+            PreparedStatement consultar = conexion.prepareStatement(sql)) {
+            consultar.setString(1, usuario);
+            consultar.setString(2, contrasenia);
+            
+            ResultSet personalObtenido = consultar.executeQuery();
+            
+            while(personalObtenido.next()){
+                posiblePersonal = new Personal();
+                posiblePersonal.setDpiPersonal(personalObtenido.getString("dpi_personal"));
+                posiblePersonal.setNombreCompleto(personalObtenido.getString("nombre_completo"));
+                posiblePersonal.setApellidoCompleto(personalObtenido.getString("apellido_completo"));
+                posiblePersonal.setTelefono(personalObtenido.getString("telefono"));
+                posiblePersonal.setCargo(CargoPersonal.valueOf(personalObtenido.getString("cargo")));
+                posiblePersonal.setUsuario(personalObtenido.getString("usuario"));
+                posiblePersonal.setContrasenia(personalObtenido.getString("contrasenia"));
+                posiblePersonal.setEstado(personalObtenido.getBoolean("estado"));
+
+            }
+            
+        } catch (SQLException ex) {
+            throw new AccesoDeDatosException("Error al consultar el Usuario y contrasenia ", ex);
+            
+        }
+        
+        return Optional.ofNullable(posiblePersonal);
     }
     
     public Optional<Personal> consultarPorDpi(String dpiPersonal) throws AccesoDeDatosException{

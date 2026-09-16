@@ -4,15 +4,15 @@
  */
 package com.mycompany.servlets;
 
-import com.mycompany.Cruds.CrudCliente;
+
+import com.mycompany.Cruds.CrudPersonal;
 import com.mycompany.Enums.CargoPersonal;
-import com.mycompany.POJOs.Cliente;
 import com.mycompany.Excepciones.AccesoDeDatosException;
 import com.mycompany.Excepciones.CampoEnBlancoException;
 import com.mycompany.POJOs.EntidadLogueo;
+import com.mycompany.POJOs.Personal;
 import com.mycompany.entidad.Entidad;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -25,8 +25,9 @@ import java.util.Optional;
  *
  * @author jonat
  */
-@WebServlet(name = "Logueo", urlPatterns = {"/Logueo"})
-public class Logueo extends HttpServlet {
+@WebServlet(name = "LogueoPersonal", urlPatterns = {"/LogueoPersonal"})
+public class LogueoPersonal extends HttpServlet {
+
 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -41,7 +42,6 @@ public class Logueo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
         
     }
 
@@ -56,22 +56,29 @@ public class Logueo extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        CrudCliente crudCliente = new CrudCliente();
-        Entidad entidad = new Entidad();
-        Optional<Cliente> cliente;
         
+        CrudPersonal crudPersonal = new CrudPersonal();
+        Entidad entidad = new Entidad();
+        Optional<Personal> personal;
         
         
         try {
-            EntidadLogueo clienteLogueo = entidad.crearEntidadDeLogue(request);
-            cliente = crudCliente.consultarPorUsuarioContrasenia(clienteLogueo.getUsuario(), clienteLogueo.getContrasenia());
-            if(cliente.isPresent()){
+            EntidadLogueo personalLogueo = entidad.crearEntidadDeLogue(request);
+            personal = crudPersonal.consultarPorUsuarioContrasenia(personalLogueo.getUsuario(), personalLogueo.getContrasenia());
+            if(personal.isPresent()){
                 // pasarle el objeto a la otra ventana
                 HttpSession session = request.getSession(); // se crea si se encontro al man
-                session.setAttribute("usuario", cliente.get());
-                session.setAttribute("cargo", CargoPersonal.CLIENTE.name());
-                request.getRequestDispatcher("/mvc/cliente/VistaPrincipalCliente.jsp").forward(request, response); // redirijir a la ventana del cliente
-                return;
+                session.setAttribute("usuario", personal.get());
+                session.setAttribute("cargo", personal.get().getCargo().name());
+                
+                if (personal.get().getCargo().equals(CargoPersonal.ADMINISTRADOR_SISTEMA)) {
+                    request.getRequestDispatcher("/mvc/adminSistema/VistaPrincipalSistema.jsp").forward(request, response); // redirijir a la ventana del cliente
+                    return;
+                } else if (personal.get().getCargo().equals(CargoPersonal.ADMINISTRADOR_SUCURSAL)){
+                    request.getRequestDispatcher("/mvc/adminSucursal/VistaPrincipalSucursal.jsp").forward(request, response); // redirijir a la ventana del cliente
+                    return;
+                }
+                
                 
             } else{
                //notificar que valio verga 
@@ -83,7 +90,11 @@ public class Logueo extends HttpServlet {
             request.setAttribute("error", ex.getMessage() + " " + ex.getCause().getMessage());
         }
         
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        request.getRequestDispatcher("index-personal.jsp").forward(request, response);
     }
-
+        
 }
+    
+    
+    
+

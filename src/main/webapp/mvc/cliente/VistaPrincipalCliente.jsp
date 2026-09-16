@@ -1,10 +1,9 @@
 <%-- 
-    Document   : VistaPrincipalUsuario
-    Created on : 9/09/2026, 13:51:32
+    Document   : VistaPrincipalCliente
+    Created on : 16/09/2026, 13:20:07
     Author     : jonat
 --%>
 
-<%@page import="com.mycompany.DTOs.Cliente"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,8 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <% Cliente cliente = (Cliente) request.getAttribute("usuario"); %>
-        
-        <h1>Hola!: <%=cliente.getNombreCompleto() %> </h1>
+        <h1>Hello World!</h1>
     </body>
 </html>

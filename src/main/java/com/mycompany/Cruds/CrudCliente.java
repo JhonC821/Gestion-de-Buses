@@ -148,7 +148,7 @@ public class CrudCliente {
 
     }
     
-        public Optional<Cliente> consultarPorUsuarioContrasenia(String usuario, String contrasenia) throws AccesoDeDatosException{
+    public Optional<Cliente> consultarPorUsuarioContrasenia(String usuario, String contrasenia) throws AccesoDeDatosException{
         
         Cliente posibleCliente = null;
         

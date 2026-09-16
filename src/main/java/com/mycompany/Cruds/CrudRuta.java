@@ -5,8 +5,8 @@
 package com.mycompany.Cruds;
 
 import com.mycompany.Conexion.Conexion;
-import com.mycompany.DTOs.Ruta;
-import com.mycompany.DTOs.Sucursal;
+import com.mycompany.POJOs.Ruta;
+import com.mycompany.POJOs.Sucursal;
 import com.mycompany.Excepciones.AccesoDeDatosException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

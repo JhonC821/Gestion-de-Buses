@@ -6,7 +6,7 @@ package com.mycompany.Cruds;
 
 
 import com.mycompany.Conexion.Conexion;
-import com.mycompany.DTOs.Cliente;
+import com.mycompany.POJOs.Cliente;
 import com.mycompany.Excepciones.AccesoDeDatosException;
 import com.mycompany.Excepciones.RegistroExistenteException;
 import java.sql.Connection;

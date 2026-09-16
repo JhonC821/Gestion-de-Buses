@@ -2,15 +2,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.mycompany.servlets;
+package com.mycompany.servlets.personal;
 
-import com.mycompany.Cruds.CrudCliente;
+import com.mycompany.Cruds.CrudPersonal;
+import com.mycompany.POJOs.Personal;
 import com.mycompany.Enums.CargoPersonal;
-import com.mycompany.POJOs.Cliente;
 import com.mycompany.Excepciones.AccesoDeDatosException;
 import com.mycompany.Excepciones.CampoEnBlancoException;
-import com.mycompany.POJOs.EntidadLogueo;
+import com.mycompany.Excepciones.FormatoIncorrectoException;
+import com.mycompany.Excepciones.RegistroExistenteException;
 import com.mycompany.entidad.Entidad;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,15 +20,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.Optional;
 
 /**
  *
  * @author jonat
  */
-@WebServlet(name = "Logueo", urlPatterns = {"/Logueo"})
-public class Logueo extends HttpServlet {
+@WebServlet(name = "RegistrarPersonal", urlPatterns = {"/RegistrarPersonal"})
+public class RegistroPersonal extends HttpServlet {
 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -42,7 +42,6 @@ public class Logueo extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
        
-        
     }
 
     /**
@@ -56,34 +55,38 @@ public class Logueo extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        CrudCliente crudCliente = new CrudCliente();
         Entidad entidad = new Entidad();
-        Optional<Cliente> cliente;
         
-        
-        
-        try {
-            EntidadLogueo clienteLogueo = entidad.crearEntidadDeLogue(request);
-            cliente = crudCliente.consultarPorUsuarioContrasenia(clienteLogueo.getUsuario(), clienteLogueo.getContrasenia());
-            if(cliente.isPresent()){
-                // pasarle el objeto a la otra ventana
-                HttpSession session = request.getSession(); // se crea si se encontro al man
-                session.setAttribute("usuario", cliente.get());
-                session.setAttribute("cargo", CargoPersonal.CLIENTE.name());
-                request.getRequestDispatcher("/mvc/adminSistema/VistaPrincipalSistema.jsp").forward(request, response); // redirijir a la ventana del cliente
-                return;
-                
+        try{
+            Personal personal = entidad.crearEntidadPersonal(request);
+            if (personal.getContrasenia().equals(personal.getConfirmarContrasenia())) {
+                CrudPersonal crudPersonal = new CrudPersonal();
+                crudPersonal.insertarPersonal(personal);
+                request.setAttribute("ingresoValido", "El personal se agrego correctamente");  
             } else{
-               //notificar que valio verga 
-               request.setAttribute("error", "Usuario o contraseña incorrecta");
+                request.setAttribute("error","Las contraseñas NO coinsiden");
             }
-        } catch (CampoEnBlancoException ex) {
-            request.setAttribute("error", ex.getMessage());
-        }catch (AccesoDeDatosException ex) {
-            request.setAttribute("error", ex.getMessage() + " " + ex.getCause().getMessage());
-        }
+           
         
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        } catch(CampoEnBlancoException ex){
+            request.setAttribute("error", ex.getMessage());
+        
+        } catch(FormatoIncorrectoException ex){
+            request.setAttribute("error", ex.getMessage() + " " + ex.getCause().getMessage());
+       
+        } catch(RegistroExistenteException ex){
+            request.setAttribute("error", ex.getMessage() + " " + ex.getCause().getMessage());
+
+        }catch(AccesoDeDatosException ex){
+                    //notificar que valio madres
+            request.setAttribute("error", ex.getMessage() + " " + ex.getCause().getMessage());
+
+        } 
+
+        RequestDispatcher dispatcher =  request.getServletContext().getRequestDispatcher("/CargaDePersonal");
+        dispatcher.forward(request, response);
+
     }
+
 
 }

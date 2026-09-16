@@ -5,8 +5,8 @@
 package com.mycompany.Cruds;
 
 import com.mycompany.Conexion.Conexion;
-import com.mycompany.DTOs.Sucursal;
-import com.mycompany.DTOs.Viaje;
+import com.mycompany.POJOs.Sucursal;
+import com.mycompany.POJOs.Viaje;
 import com.mycompany.Enums.EstadoViaje;
 import com.mycompany.Excepciones.AccesoDeDatosException;
 import java.sql.Connection;

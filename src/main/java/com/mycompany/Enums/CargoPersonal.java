@@ -11,6 +11,7 @@ package com.mycompany.Enums;
 public enum CargoPersonal {
     ADMINISTRADOR_SISTEMA,
     ADMINISTRADOR_SUCURSAL,
-    CHOFER
+    CHOFER,
+    CLIENTE
     
 }

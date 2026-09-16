@@ -6,9 +6,9 @@ package com.mycompany.Cruds;
 
 
 import com.mycompany.Conexion.Conexion;
-import com.mycompany.DTOs.AsignacionAdminSucursal;
-import com.mycompany.DTOs.Personal;
-import com.mycompany.DTOs.Sucursal;
+import com.mycompany.POJOs.AsignacionAdminSucursal;
+import com.mycompany.POJOs.Personal;
+import com.mycompany.POJOs.Sucursal;
 import com.mycompany.Excepciones.AccesoDeDatosException;
 import com.mycompany.Excepciones.RegistroExistenteException;
 import java.sql.Connection;

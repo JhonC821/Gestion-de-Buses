@@ -5,7 +5,7 @@
 package com.mycompany.servlets;
 
 import com.mycompany.Cruds.CrudSucursal;
-import com.mycompany.DTOs.Sucursal;
+import com.mycompany.POJOs.Sucursal;
 import com.mycompany.Excepciones.AccesoDeDatosException;
 import com.mycompany.Excepciones.RegistroExistenteException;
 import com.mycompany.Verificacion.VerificarDatos;

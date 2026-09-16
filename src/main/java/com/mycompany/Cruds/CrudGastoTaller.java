@@ -5,7 +5,7 @@
 package com.mycompany.Cruds;
 
 import com.mycompany.Conexion.Conexion;
-import com.mycompany.DTOs.GastoTaller;
+import com.mycompany.POJOs.GastoTaller;
 import com.mycompany.Excepciones.AccesoDeDatosException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

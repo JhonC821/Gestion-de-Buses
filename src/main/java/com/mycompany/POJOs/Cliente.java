@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.DTOs;
+package com.mycompany.POJOs;
 
 /**
  *
@@ -20,6 +20,7 @@ public class Cliente {
     private Double saldo;
     private String usuario;
     private String contrasenia;
+    private String confirmarContrasenia;
     private String direccion;
     private boolean estado;
 
@@ -116,6 +117,14 @@ public class Cliente {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public String getConfirmarContrasenia() {
+        return confirmarContrasenia;
+    }
+
+    public void setConfirmarContrasenia(String confirmarContrasenia) {
+        this.confirmarContrasenia = confirmarContrasenia;
     }
     
     

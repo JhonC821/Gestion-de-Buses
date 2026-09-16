@@ -6,7 +6,7 @@ package com.mycompany.Cruds;
 
 
 import com.mycompany.Conexion.Conexion;
-import com.mycompany.DTOs.Personal;
+import com.mycompany.POJOs.Personal;
 import com.mycompany.Enums.CargoPersonal;
 import com.mycompany.Excepciones.AccesoDeDatosException;
 import com.mycompany.Excepciones.RegistroExistenteException;
@@ -137,7 +137,7 @@ public class CrudPersonal {
 
         String dpi = dpiPersonal;
         String sql = CONSULTAR_POR_DPI;
-        Personal posiblePersonal = new Personal();
+        Personal posiblePersonal = null;
         
         try(Connection conexion = Conexion.getInstance().getConexion();
             PreparedStatement consultar = conexion.prepareStatement(sql)){
@@ -145,6 +145,7 @@ public class CrudPersonal {
             ResultSet personalObtenido = consultar.executeQuery();
             
             while(personalObtenido.next()){
+                posiblePersonal = new Personal();
                 posiblePersonal.setDpiPersonal(personalObtenido.getString("dpi_personal"));
                 posiblePersonal.setNombreCompleto(personalObtenido.getString("nombre_completo"));
                 posiblePersonal.setApellidoCompleto(personalObtenido.getString("apellido_completo"));

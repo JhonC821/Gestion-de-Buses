@@ -5,7 +5,7 @@
 package com.mycompany.Cruds;
 
 import com.mycompany.Conexion.Conexion;
-import com.mycompany.DTOs.AlquilerBus;
+import com.mycompany.POJOs.AlquilerBus;
 import com.mycompany.Enums.EstadoAlquilerDeBus;
 import com.mycompany.Excepciones.AccesoDeDatosException;
 import java.sql.Connection;

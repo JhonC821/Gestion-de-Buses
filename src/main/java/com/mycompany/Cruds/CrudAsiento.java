@@ -5,7 +5,7 @@
 package com.mycompany.Cruds;
 
 import com.mycompany.Conexion.Conexion;
-import com.mycompany.DTOs.Asiento;
+import com.mycompany.POJOs.Asiento;
 import com.mycompany.Enums.EstadoAsiento;
 import com.mycompany.Excepciones.AccesoDeDatosException;
 import java.sql.Connection;

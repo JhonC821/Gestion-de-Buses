@@ -29,7 +29,7 @@
     </div>
 
     <div class="container mt-5" style="width: 400px; height: 300px; border-radius: 10px;">
-        <form action="Logueo" method="get">
+        <form action="Logueo" method="post">
 
             <h1 class="text-center text-light">Iniciar Sesión</h1>
                 <% 

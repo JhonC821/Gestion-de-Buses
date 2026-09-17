@@ -9,8 +9,10 @@ import com.mycompany.Enums.CargoPersonal;
 import com.mycompany.Excepciones.CampoEnBlancoException;
 import com.mycompany.Excepciones.FormatoIncorrectoException;
 import com.mycompany.POJOs.Cliente;
+import com.mycompany.POJOs.ConfiguracionSistema;
 import com.mycompany.POJOs.EntidadLogueo;
 import com.mycompany.POJOs.Personal;
+import com.mycompany.POJOs.Sucursal;
 import com.mycompany.Verificacion.VerificarDatos;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -115,5 +117,48 @@ public class Entidad {
         return entidad;
     }
     
+    public Sucursal crearEntidadSucursal(HttpServletRequest request) throws CampoEnBlancoException{
+        
+        VerificarDatos verificar = new VerificarDatos();
+        
+        String codigo = request.getParameter("codigoSucursal");
+        String nombre = request.getParameter("nombreSucursal");
+        String direccion = request.getParameter("direccion");
+        
+        if (verificar.campoVacio(codigo) || verificar.campoVacio(nombre) || verificar.campoVacio(direccion)) {
+            
+            throw new CampoEnBlancoException("Alguno de los campos esta Vacío");
+            
+        }
+        
+        Sucursal nuevaSucursal = new Sucursal();
+        nuevaSucursal.setCodigoSucursal(codigo);
+        nuevaSucursal.setNombreSucursal(nombre);
+        nuevaSucursal.setDireccion(direccion);
+       
+        return nuevaSucursal;
+    }
+    
+    public ConfiguracionSistema crearEntidadConfiguracionSistema(HttpServletRequest request) throws CampoEnBlancoException, FormatoIncorrectoException{
+        
+        VerificarDatos verificar = new VerificarDatos();
+        
+        String clave = request.getParameter("clave");
+        String valor = request.getParameter("valor");
+        
+        if (verificar.campoVacio(clave) || verificar.campoVacio(valor)) {
+            
+            throw new CampoEnBlancoException("Alguno de los campos esta Vacío");
+            
+        }
+        
+        double valorValido = verificar.verificarNumeroDouble(valor);
+        
+        ConfiguracionSistema configuracion = new ConfiguracionSistema();
+        configuracion.setClave(clave);
+        configuracion.setValor(valorValido);
+       
+        return configuracion;
+    }
     
 }

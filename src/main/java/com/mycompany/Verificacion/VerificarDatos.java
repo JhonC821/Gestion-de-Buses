@@ -93,7 +93,7 @@ public class VerificarDatos {
     }
     
     public boolean campoVacio(String campo){
-        if (campo.trim().isEmpty() || campo == null) {
+        if (campo == null || campo.trim().isEmpty()) {
             return true;
         }
         

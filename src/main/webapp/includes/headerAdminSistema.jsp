@@ -8,7 +8,7 @@
 <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
-                <a class="navbar-brand fw-bold" href="#">TransitPro</a>
+                <a class="navbar-brand fw-bold" href="${pageContext.servletContext.contextPath}/mvc/adminSistema/VistaPrincipalSistema.jsp">TransitPro</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -21,11 +21,14 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link active" href="${pageContext.servletContext.contextPath}/mvc/adminSistema/VistaSucursal">Sucursal</a>
+                            <a class="nav-link active" href="${pageContext.servletContext.contextPath}/CargaDeSucursal">Sucursal</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="${pageContext.servletContext.contextPath}/mvc/adminSistema/VistaSistema">Sistema</a>
-                        </li>    
+                            <a class="nav-link active" href="${pageContext.servletContext.contextPath}/CargaDeConfiguracionSistema">Sistema</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="${pageContext.servletContext.contextPath}/CargaDeAignacionSucursal">Asignacion</a>
+                        </li> 
 
 
                         <li class="nav-item dropdown">
@@ -44,10 +47,9 @@
                             <a class="nav-link disabled" aria-disabled="true">Disabled</a>
                         </li>
                     </ul>
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                    <form class="d-flex" action ="${pageContext.servletContext.contextPath}/CerrarSesion">
                         <button class="btn btn-outline-success" type="submit">
-                            Search
+                            Cerrar Sesion
                         </button>
                     </form>
                 </div>

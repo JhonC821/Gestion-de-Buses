@@ -2,34 +2,29 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.mycompany.servlets;
+package com.mycompany.servlets.sucursal;
 
-import com.mycompany.Cruds.CrudCliente;
-import com.mycompany.Enums.CargoPersonal;
-import com.mycompany.POJOs.Cliente;
+import com.mycompany.Cruds.CrudSucursal;
 import com.mycompany.Excepciones.AccesoDeDatosException;
 import com.mycompany.Excepciones.CampoEnBlancoException;
-import com.mycompany.POJOs.EntidadLogueo;
+import com.mycompany.POJOs.Sucursal;
 import com.mycompany.entidad.Entidad;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.Optional;
 
 /**
  *
  * @author jonat
  */
-@WebServlet(name = "Logueo", urlPatterns = {"/Logueo"})
-public class Logueo extends HttpServlet {
+@WebServlet(name = "ActualizarSucursal", urlPatterns = {"/ActualizarSucursal"})
+public class ActualizarSucursal extends HttpServlet {
 
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -41,8 +36,7 @@ public class Logueo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
-        
+
     }
 
     /**
@@ -56,35 +50,31 @@ public class Logueo extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        CrudCliente crudCliente = new CrudCliente();
         Entidad entidad = new Entidad();
-        Optional<Cliente> cliente;
-        
-        
-        
+        Sucursal sucursal = null;
+        HttpSession sesion = request.getSession();
+
         try {
-            EntidadLogueo clienteLogueo = entidad.crearEntidadDeLogue(request);
-            cliente = crudCliente.consultarPorUsuarioContrasenia(clienteLogueo.getUsuario(), clienteLogueo.getContrasenia());
-            if(cliente.isPresent()){
-                // pasarle el objeto a la otra ventana
-                HttpSession session = request.getSession(); // se crea si se encontro al man
-                session.setAttribute("usuario", cliente.get());
-                session.setAttribute("cargo", CargoPersonal.CLIENTE.name());
-                response.sendRedirect(request.getContextPath() + "/mvc/cliente/VistaPrincipalCliente.jsp");
-                //request.getRequestDispatcher("/mvc/cliente/VistaPrincipalCliente.jsp").forward(request, response); // redirijir a la ventana del cliente
-                return;
-                
-            } else{
-               //notificar que valio verga 
-               request.setAttribute("error", "Usuario o contraseña incorrecta");
-            }
+            sucursal = entidad.crearEntidadSucursal(request);
+            CrudSucursal crudSucursal = new CrudSucursal();
+            crudSucursal.actualizarSucursal(sucursal);
+            sesion.setAttribute("ingresoValido", "La sucursal se actualizo correctamente");
+            response.sendRedirect(request.getContextPath() + "/CargaDeSucursal");
+            return;
+
         } catch (CampoEnBlancoException ex) {
             request.setAttribute("error", ex.getMessage());
-        }catch (AccesoDeDatosException ex) {
+
+        } catch (AccesoDeDatosException ex) {
+            //notificar que valio madres
             request.setAttribute("error", ex.getMessage() + " " + ex.getCause().getMessage());
         }
-        
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+
+        String codigoSucursal = request.getParameter("codigoSucursal");
+        request.setAttribute("codigoSucursalEditar", codigoSucursal);
+        RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/EditarSucursal");
+        dispatcher.forward(request, response);
+
     }
 
 }

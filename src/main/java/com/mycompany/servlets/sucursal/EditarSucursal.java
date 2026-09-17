@@ -2,14 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.mycompany.servlets.personal;
+package com.mycompany.servlets.sucursal;
 
-import com.mycompany.Cruds.CrudPersonal;
+import com.mycompany.Cruds.CrudSucursal;
 import com.mycompany.Excepciones.AccesoDeDatosException;
-import com.mycompany.POJOs.Personal;
-import jakarta.servlet.RequestDispatcher;
+import com.mycompany.POJOs.Sucursal;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -21,10 +19,9 @@ import java.util.Optional;
  *
  * @author jonat
  */
-@WebServlet(name = "DeshabilitarHabilitarPersonal", urlPatterns = {"/DeshabilitarHabilitarPersonal"})
-public class DeshabilitarHabilitarPersonal extends HttpServlet {
+@WebServlet(name = "EditarSucursal", urlPatterns = {"/EditarSucursal"})
+public class EditarSucursal extends HttpServlet {
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -50,23 +47,27 @@ public class DeshabilitarHabilitarPersonal extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        CrudPersonal crudPersonal = new CrudPersonal();
-        String dpiPersonal = request.getParameter("dpiPersonal");
-        
-        try{
-            Optional<Personal> personal = crudPersonal.consultarPorDpi(dpiPersonal);
-            if (personal.isPresent()) {
-                    crudPersonal.habilitarDeshabilitar(personal.get());
+
+        CrudSucursal crudSucursal = new CrudSucursal();
+        String codigo;
+        //para verificar si viene de un formulario o otro servlet lo mando al prro
+        try {
+            if (request.getAttribute("codigoSucursalEditar") != null) {
+                codigo = (String) request.getAttribute("codigoSucursalEditar");
+            } else {
+                codigo = request.getParameter("codigoSucursalEditar");
             }
-            
-            response.sendRedirect(request.getContextPath() +"/CargaDePersonal");
-   
-        } catch(AccesoDeDatosException ex){
-            request.setAttribute("error", ex.getMessage() + " " + ex.getCause().getMessage());
-            RequestDispatcher dispatcher =  request.getServletContext().getRequestDispatcher("/CargaDePersonal");
-            dispatcher.forward(request, response);
+
+            Sucursal sucursalConsulta = new Sucursal();
+            sucursalConsulta.setCodigoSucursal(codigo);
+
+            Optional<Sucursal> sucursal = crudSucursal.consultarPorCodigo(sucursalConsulta);
+            request.setAttribute("sucursal", sucursal.get());
+            request.getRequestDispatcher("/mvc/adminSistema/VistaEditarSucursal.jsp").forward(request, response);
+
+        } catch (AccesoDeDatosException ex) {
+
         }
-        
     }
 
 }

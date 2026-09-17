@@ -20,6 +20,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -56,13 +57,17 @@ public class RegistroPersonal extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Entidad entidad = new Entidad();
+        HttpSession sesion = request.getSession();
         
         try{
             Personal personal = entidad.crearEntidadPersonal(request);
             if (personal.getContrasenia().equals(personal.getConfirmarContrasenia())) {
                 CrudPersonal crudPersonal = new CrudPersonal();
                 crudPersonal.insertarPersonal(personal);
-                request.setAttribute("ingresoValido", "El personal se agrego correctamente");  
+                //request.setAttribute("ingresoValido", "El personal se agrego correctamente");  
+                sesion.setAttribute("ingresoValido", "El personal se agrego Correctamente");
+                response.sendRedirect(request.getContextPath() + "/CargarDePersonal");
+                return;
             } else{
                 request.setAttribute("error","Las contraseñas NO coinsiden");
             }

@@ -28,10 +28,11 @@
                 </div>
         </c:if>
         
-        <c:if test="${not empty ingresoValido}">
+        <c:if test="${not empty sessionScope.ingresoValido}">
                 <div class="alert alert-success" role="alert">
-                    ${ingresoValido}
+                    ${sessionScope.ingresoValido}
                 </div>
+                 <c:remove var="ingresoValido" scope="session" />
         </c:if>
 
         <div class="container mt-5">

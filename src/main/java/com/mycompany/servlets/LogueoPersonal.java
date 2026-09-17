@@ -72,10 +72,12 @@ public class LogueoPersonal extends HttpServlet {
                 session.setAttribute("cargo", personal.get().getCargo().name());
                 
                 if (personal.get().getCargo().equals(CargoPersonal.ADMINISTRADOR_SISTEMA)) {
-                    request.getRequestDispatcher("/mvc/adminSistema/VistaPrincipalSistema.jsp").forward(request, response); // redirijir a la ventana del cliente
+                    //request.getRequestDispatcher("/mvc/adminSistema/VistaPrincipalSistema.jsp").forward(request, response);
+                    response.sendRedirect(request.getContextPath() + "/mvc/adminSistema/VistaPrincipalSistema.jsp");
                     return;
                 } else if (personal.get().getCargo().equals(CargoPersonal.ADMINISTRADOR_SUCURSAL)){
-                    request.getRequestDispatcher("/mvc/adminSucursal/VistaPrincipalSucursal.jsp").forward(request, response); // redirijir a la ventana del cliente
+                    //request.getRequestDispatcher("/mvc/adminSucursal/VistaPrincipalSucursal.jsp").forward(request, response); 
+                    response.sendRedirect(request.getContextPath() + "/mvc/adminSucursal/VistaPrincipalSucursal.jsp");
                     return;
                 }
                 

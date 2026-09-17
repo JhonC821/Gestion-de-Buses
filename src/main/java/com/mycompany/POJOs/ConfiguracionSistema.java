@@ -8,16 +8,16 @@ package com.mycompany.POJOs;
  *
  * @author jonat
  */
-public class Configuracion {
+public class ConfiguracionSistema {
 
     private String clave;
     private double precioDeDepreciacionDeBus;
 
 
-    public Configuracion() {
+    public ConfiguracionSistema() {
     }
 
-    public Configuracion(String clave, double valor) {
+    public ConfiguracionSistema(String clave, double valor) {
         this.clave = clave;
         this.precioDeDepreciacionDeBus = valor;
 

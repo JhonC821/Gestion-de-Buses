@@ -2,29 +2,29 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.mycompany.servlets.personal;
+package com.mycompany.servlets.sucursal;
 
 import com.mycompany.Cruds.CrudPersonal;
+import com.mycompany.Cruds.CrudSucursal;
+import com.mycompany.Enums.CargoPersonal;
 import com.mycompany.Excepciones.AccesoDeDatosException;
 import com.mycompany.POJOs.Personal;
-import jakarta.servlet.RequestDispatcher;
+import com.mycompany.POJOs.Sucursal;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Optional;
+import java.util.List;
 
 /**
  *
  * @author jonat
  */
-@WebServlet(name = "DeshabilitarHabilitarPersonal", urlPatterns = {"/DeshabilitarHabilitarPersonal"})
-public class DeshabilitarHabilitarPersonal extends HttpServlet {
+@WebServlet(name = "CargaDeSucursal", urlPatterns = {"/CargaDeSucursal"})
+public class PrincipalSucursal extends HttpServlet {
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -37,6 +37,21 @@ public class DeshabilitarHabilitarPersonal extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        CrudSucursal crudSucursal = new CrudSucursal();
+        CrudPersonal crudPersonal = new CrudPersonal();
+
+        try {
+
+            List<Sucursal> listaSucursales = crudSucursal.consultarSucursales();
+            request.setAttribute("listaSucursales", listaSucursales);
+            request.getRequestDispatcher("/mvc/adminSistema/VistaSucursal.jsp").forward(request, response);
+
+        } catch (AccesoDeDatosException ex) {
+
+            request.setAttribute("error", ex.getMessage() + " " + ex.getCause().getMessage());
+            request.getRequestDispatcher("/mvc/adminSistema/VistaSucursal.jsp").forward(request, response);
+
+        }
     }
 
     /**
@@ -50,23 +65,7 @@ public class DeshabilitarHabilitarPersonal extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        CrudPersonal crudPersonal = new CrudPersonal();
-        String dpiPersonal = request.getParameter("dpiPersonal");
-        
-        try{
-            Optional<Personal> personal = crudPersonal.consultarPorDpi(dpiPersonal);
-            if (personal.isPresent()) {
-                    crudPersonal.habilitarDeshabilitar(personal.get());
-            }
-            
-            response.sendRedirect(request.getContextPath() +"/CargaDePersonal");
-   
-        } catch(AccesoDeDatosException ex){
-            request.setAttribute("error", ex.getMessage() + " " + ex.getCause().getMessage());
-            RequestDispatcher dispatcher =  request.getServletContext().getRequestDispatcher("/CargaDePersonal");
-            dispatcher.forward(request, response);
-        }
-        
+        doGet(request, response);
     }
 
 }

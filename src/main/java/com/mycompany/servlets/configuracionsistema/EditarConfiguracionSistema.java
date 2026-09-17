@@ -2,14 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.mycompany.servlets.personal;
+package com.mycompany.servlets.configuracionsistema;
 
-import com.mycompany.Cruds.CrudPersonal;
+import com.mycompany.Cruds.CrudConfiguracionSistema;
 import com.mycompany.Excepciones.AccesoDeDatosException;
-import com.mycompany.POJOs.Personal;
-import jakarta.servlet.RequestDispatcher;
+import com.mycompany.POJOs.ConfiguracionSistema;
+import com.mycompany.Verificacion.VerificarDatos;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,13 +17,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 /**
+ * Esta tabla solo maneja un registro fijo: DepreciacionPorKilometroRecorrido.
+ * Por eso no existe un servlet "Principal" con listado, únicamente se
+ * consulta y edita ese único registro.
  *
  * @author jonat
  */
-@WebServlet(name = "DeshabilitarHabilitarPersonal", urlPatterns = {"/DeshabilitarHabilitarPersonal"})
-public class DeshabilitarHabilitarPersonal extends HttpServlet {
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+@WebServlet(name = "EditarConfiguracionSistema", urlPatterns = {"/EditarConfiguracionSistema"})
+public class EditarConfiguracionSistema extends HttpServlet {
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -50,23 +50,31 @@ public class DeshabilitarHabilitarPersonal extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        CrudPersonal crudPersonal = new CrudPersonal();
-        String dpiPersonal = request.getParameter("dpiPersonal");
         
-        try{
-            Optional<Personal> personal = crudPersonal.consultarPorDpi(dpiPersonal);
-            if (personal.isPresent()) {
-                    crudPersonal.habilitarDeshabilitar(personal.get());
-            }
+        CrudConfiguracionSistema crudConfiguracion = new CrudConfiguracionSistema();
+        String clave;
+        try {
             
-            response.sendRedirect(request.getContextPath() +"/CargaDePersonal");
-   
-        } catch(AccesoDeDatosException ex){
+            if (request.getAttribute("clave") != null)
+                clave =(String) request.getAttribute("clave");
+            else{
+                clave = request.getParameter("clave");
+            }
+
+            ConfiguracionSistema configuracionConsulta = new ConfiguracionSistema();
+            configuracionConsulta.setClave(clave);
+            
+            //trae la prra configuracion
+            Optional<ConfiguracionSistema> configuracion = crudConfiguracion.consultarPorClave(configuracionConsulta);
+            request.setAttribute("configuracion", configuracion.get());
+            request.getRequestDispatcher("/mvc/adminSistema/VistaEditarConfiguracionSistema.jsp").forward(request, response);
+
+        } catch (AccesoDeDatosException ex) {
+
             request.setAttribute("error", ex.getMessage() + " " + ex.getCause().getMessage());
-            RequestDispatcher dispatcher =  request.getServletContext().getRequestDispatcher("/CargaDePersonal");
-            dispatcher.forward(request, response);
+            request.getRequestDispatcher("/mvc/adminSistema/VistaEditarConfiguracionSistema.jsp").forward(request, response);
+
         }
-        
     }
 
 }

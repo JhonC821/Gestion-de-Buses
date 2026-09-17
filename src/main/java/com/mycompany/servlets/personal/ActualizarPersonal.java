@@ -11,6 +11,7 @@ import com.mycompany.Excepciones.FormatoIncorrectoException;
 import com.mycompany.Excepciones.RegistroExistenteException;
 import com.mycompany.POJOs.Personal;
 import com.mycompany.entidad.Entidad;
+import jakarta.jms.Session;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,6 +20,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -56,6 +58,7 @@ public class ActualizarPersonal extends HttpServlet {
             throws ServletException, IOException {
         Entidad entidad = new Entidad();
         Personal personal = null;
+        HttpSession sesion = request.getSession();
         
         try{
             personal = entidad.crearEntidadPersonal(request);
@@ -63,9 +66,10 @@ public class ActualizarPersonal extends HttpServlet {
             if (personal.getContrasenia().equals(personal.getConfirmarContrasenia())) {
                 CrudPersonal crudPersonal = new CrudPersonal();
                 crudPersonal.actualizarPersonal(personal);
-                request.setAttribute("ingresoValido", "El personal se Actualizo correctamente");
-                RequestDispatcher dispatcher =  request.getServletContext().getRequestDispatcher("/CargaDePersonal");
-                dispatcher.forward(request, response);
+                sesion.setAttribute("ingresoValido", "El personal se Actualizo correctamente");
+                response.sendRedirect(request.getContextPath() + "/CargaDePersonal");
+                //RequestDispatcher dispatcher =  request.getServletContext().getRequestDispatcher("/CargaDePersonal");
+                //dispatcher.forward(request, response);
                 return;
             } else{
                 

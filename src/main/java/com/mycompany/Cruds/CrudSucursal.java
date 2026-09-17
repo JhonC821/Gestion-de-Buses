@@ -65,7 +65,7 @@ public class CrudSucursal {
              PreparedStatement actualizar = conexion.prepareStatement(sql)) {
             actualizar.setString(1, sucursal.getNombreSucursal());
             actualizar.setString(2, sucursal.getDireccion());
-            actualizar.setString(4, sucursal.getCodigoSucursal());
+            actualizar.setString(3, sucursal.getCodigoSucursal());
             actualizar.executeUpdate();
 
         } catch (SQLException ex) {

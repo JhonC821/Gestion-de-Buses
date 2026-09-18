@@ -46,6 +46,7 @@
 
                 <div class="col-md-6">
                     <label for="codigoSucursal" class = "form-label">Sucursal Propietaria</label>
+                    <select class="form-select" id="codigoSucursal" name="codigoSucursal" required>
                         <c:forEach var="sucursal" items="${listaSucursales}">
                             <option value="${sucursal.codigoSucursal}" ${sucursal.codigoSucursal == bus.codigoSucursal ? 'selected' : ''}>${sucursal.nombreSucursal}</option>
                         </c:forEach>

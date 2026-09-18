@@ -14,7 +14,7 @@
     <%@ include file="/includes/headerAdminSucursal.jsp" %>
     <main>
         <div class = "container mt-3">
-            <form class = "row g-3" action="${pageContext.servletContext.contextPath}/RegistrarBus" method="POST" enctype="multipart/form-data">
+            <form class = "row g-3" action="${pageContext.servletContext.contextPath}/RegistrarBus" method="POST">
 
                 <h1 class="text-center">Registro de Bus</h1>
 

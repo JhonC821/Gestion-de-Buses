@@ -143,9 +143,9 @@ public class CrudGastoTaller {
              PreparedStatement consultar = conexion.prepareStatement(sql)) {
             consultar.setInt(1, id);
             ResultSet gastoObtenido = consultar.executeQuery();
-            posibleGasto = new GastoTaller();
-            
+           
             while(gastoObtenido.next()){
+                posibleGasto = new GastoTaller();
                 posibleGasto.setIdGasto(gastoObtenido.getInt("id_gasto"));
                 posibleGasto.setNoPlaca(gastoObtenido.getString("no_placa"));
                 posibleGasto.setFechaGasto(gastoObtenido.getDate("fecha_gasto"));
@@ -176,7 +176,7 @@ public class CrudGastoTaller {
             gasto.setMontoRepuesto(gastoObtenido.getDouble("monto_repuesto"));
             gasto.setMontoManoObra(gastoObtenido.getDouble("monto_mano_obra"));
             gasto.setMontoTotal(gastoObtenido.getDouble("monto_total"));
-        
+            gastos.add(gasto);
         }
 
         return gastos;

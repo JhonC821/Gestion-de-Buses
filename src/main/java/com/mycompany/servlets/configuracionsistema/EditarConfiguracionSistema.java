@@ -16,37 +16,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
-/**
- * Esta tabla solo maneja un registro fijo: DepreciacionPorKilometroRecorrido.
- * Por eso no existe un servlet "Principal" con listado, únicamente se
- * consulta y edita ese único registro.
- *
- * @author jonat
- */
+
 @WebServlet(name = "EditarConfiguracionSistema", urlPatterns = {"/EditarConfiguracionSistema"})
 public class EditarConfiguracionSistema extends HttpServlet {
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

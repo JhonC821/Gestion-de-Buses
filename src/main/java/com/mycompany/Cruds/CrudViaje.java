@@ -26,7 +26,7 @@ public class CrudViaje {
 
     //sql
     private final String INSERTAR_VIAJE = "INSERT INTO " + NOMBRE_ENTIDAD + "(no_placa, dpi_personal, codigo_ruta, fecha_hora_salida, kilometraje_inicial_bus) VALUES(?,?,?,?,?)";
-    private final String ACTUALIZAR_VIAJE = "UPDATE " + NOMBRE_ENTIDAD + " SET no_placa = ?, dpi_personal = ?, no_ruta = ?, fecha_hora_salida = ?, kilometraje_inicial_bus = ? WHERE id_viaje = ?";
+    private final String ACTUALIZAR_VIAJE = "UPDATE " + NOMBRE_ENTIDAD + " SET no_placa = ?, dpi_personal = ?, codigo_ruta = ?, fecha_hora_salida = ?, kilometraje_inicial_bus = ? WHERE id_viaje = ?";
     private final String FINALIZAR_VIAJE = "UPDATE " + NOMBRE_ENTIDAD + " SET fecha_hora_llegada = ?, kilometraje_final_bus = ?, combustible_consumido = ?, depreciacion_bus = ?, monto_total = ? WHERE id_viaje = ?";
     private final String ACTUALIZAR_ESTADO_VIAJE = "UPDATE " + NOMBRE_ENTIDAD + " SET estado = ? WHERE id_viaje = ?";
 
@@ -165,24 +165,25 @@ public class CrudViaje {
             consultar.setInt(1, id);
             ResultSet viajeObtenido = consultar.executeQuery();
             
-            posibleViaje = new Viaje();
-            posibleViaje.setIdViaje(viajeObtenido.getInt("id_viaje"));
-            posibleViaje.setNoPlaca(viajeObtenido.getString("no_placa"));
-            posibleViaje.setDpiPersonal(viajeObtenido.getString("dpi_personal"));
-            posibleViaje.setCodigoRuta(viajeObtenido.getString("codigo_ruta"));
-            posibleViaje.setFechaHoraSalida(viajeObtenido.getTimestamp("fecha_hora_salida"));
-            posibleViaje.setFechaHoraLlegada(viajeObtenido.getTimestamp("fecha_hora_llegada"));
-            posibleViaje.setKilometrajeInicialBus(viajeObtenido.getDouble("kilometraje_inicial_bus"));
-            posibleViaje.setKilometrajeFinalBus(viajeObtenido.getDouble("kilometraje_final_bus"));
-            posibleViaje.setCombustibleConsumido(viajeObtenido.getDouble("combustible_consumido"));
-            posibleViaje.setDepreciacionBus(viajeObtenido.getDouble("depreciacion_bus"));
-            posibleViaje.setMontoTotal(viajeObtenido.getDouble("monto_total"));
-            posibleViaje.setEstado(EstadoViaje.valueOf(viajeObtenido.getString("estado")));
-            
-            
+            while(viajeObtenido.next()){
+                posibleViaje = new Viaje();
+                posibleViaje.setIdViaje(viajeObtenido.getInt("id_viaje"));
+                posibleViaje.setNoPlaca(viajeObtenido.getString("no_placa"));
+                posibleViaje.setDpiPersonal(viajeObtenido.getString("dpi_personal"));
+                posibleViaje.setCodigoRuta(viajeObtenido.getString("codigo_ruta"));
+                posibleViaje.setFechaHoraSalida(viajeObtenido.getTimestamp("fecha_hora_salida"));
+                posibleViaje.setFechaHoraLlegada(viajeObtenido.getTimestamp("fecha_hora_llegada"));
+                posibleViaje.setKilometrajeInicialBus(viajeObtenido.getDouble("kilometraje_inicial_bus"));
+                posibleViaje.setKilometrajeFinalBus(viajeObtenido.getDouble("kilometraje_final_bus"));
+                posibleViaje.setCombustibleConsumido(viajeObtenido.getDouble("combustible_consumido"));
+                posibleViaje.setDepreciacionBus(viajeObtenido.getDouble("depreciacion_bus"));
+                posibleViaje.setMontoTotal(viajeObtenido.getDouble("monto_total"));
+                posibleViaje.setEstado(EstadoViaje.valueOf(viajeObtenido.getString("estado")));
+            }
+                 
         } catch (SQLException ex) {
 
-            throw new AccesoDeDatosException("Error al consultar el Viaje", ex);
+            throw new AccesoDeDatosException("Error al consultar el Viaje por Id", ex);
         }
 
         return Optional.ofNullable(posibleViaje);

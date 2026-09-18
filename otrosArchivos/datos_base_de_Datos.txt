@@ -1,0 +1,92 @@
+INSERT INTO personal (dpi_personal, nombre_completo, apellido_completo, telefono, cargo, usuario, contrasenia, estado) VALUES
+('1234567891234', 'Carlos Ramiro', 'Ramírez López',     '78978457', 'ADMINISTRADOR_SISTEMA', 'cramirez',  '123456c', TRUE),
+('1234567891235', 'Ana Luisa',    'Gómez Pérez',       '45645412', 'ADMINISTRADOR_SUCURSAL', 'agomez',    '123456a', TRUE),
+('1234567891236', 'Luis Martín',   'Hernández Morales', '4512326', 'CHOFER',        'lhernandez','123456l', TRUE),
+('1234567891237', 'Marta María',  'Santos Cruz',       '36996369', 'CHOFER',        'msantos',   '123456m', TRUE),
+('1234567891238', 'Jorge Emiliano',  'Pineda Lopez',         '78987412', 'ADMINISTRADOR_SISTEMA',        'jpineda',   '123456j', TRUE);
+('1234567891239', 'Deyby Jonatan',  'Cotom Santos',         '12457835', 'ADMINISTRADOR_SUCURSAL',        'dcotom',   '123456d', TRUE);
+
+INSERT INTO sucursal (codigo_sucursal, nombre_sucursal, direccion, estado) VALUES
+('SUC-001', 'La pedrera',   'Zona 4, Ciudad de Guatemala', TRUE),
+('SUC-002', 'El tramo largo', '4a Calle, Quetzaltenango',  TRUE),
+('SUC-003', 'La nueva Escuintla',  'Ruta al Pacífico, Escuintla',  TRUE);
+
+INSERT INTO chofer (dpi_personal, no_licencia, tipo_licencia, fecha_vencimiento, sucursal_asignada, salario_base, estado_operativo) VALUES
+('1234567891236', '5-1234567', 'A', '2027-05-15', 'SUC-001', 4500.00, 'LIBRE'),
+('1234567891237', '5-7897894', 'A', '2026-11-30', 'SUC-002', 4300.00, 'LIBRE');
+
+INSERT INTO asignacion_admin_sucursal (dpi_admin, codigo_sucursal, estado) VALUES
+('1234567891239', 'SUC-001', TRUE),
+('1234567891239', 'SUC-002', TRUE),
+('1234567891239', 'SUC-003', TRUE),
+('1234567891235', 'SUC-001', TRUE);
+
+INSERT INTO bus (no_placa, modelo, marca, codigo_sucursal, sucursal_actual, anio_fabricacion, capacidad, kilometraje_actual, estado_operativo, estado) VALUES
+('P123ABC', 'modelo1',        'Volvo',     'SUC-001', 'SUC-001', 2020, 10, 125430.50, 'LIBRE', TRUE),
+('P456DEF', 'modelo2', 'BlueBird', 'SUC-002', 'SUC-002', 2019, 10,  98210.00, 'LIBRE', TRUE),
+('P789GHI', 'modelo3',      'Mercedes-Benz', 'SUC-003', 'SUC-003', 2021, 10,  60125.75, 'EN_RUTA', TRUE);
+
+INSERT INTO gasto_taller (no_placa, fecha_gasto, descripcion, monto_repuesto, monto_mano_obra) VALUES
+('P123ABC', '2026-07-10', 'Cambio de frenos',        850.00, 350.00),
+('P456DEF', '2026-08-02', 'Mantenimiento de motor', 1200.00, 600.00),
+('P789GHI', '2026-08-15', 'Cambio de llantas',      1600.00, 200.00);
+
+INSERT INTO asiento (no_placa, numero_asiento, estado) VALUES
+('P123ABC', 1, 'LIBRE'),
+('P123ABC', 2, 'LIBRE'),
+('P123ABC', 3, 'LIBRE'),
+('P123ABC', 4, 'LIBRE'),
+('P123ABC', 5, 'LIBRE'),
+('P123ABC', 6, 'LIBRE'),
+('P123ABC', 7, 'LIBRE'),
+('P123ABC', 8, 'LIBRE'),
+('P123ABC', 9, 'LIBRE'),
+('P123ABC', 10, 'LIBRE'),
+('P456DEF', 1, 'LIBRE'),
+('P456DEF', 2, 'LIBRE'),
+('P456DEF', 3, 'LIBRE'),
+('P456DEF', 4, 'LIBRE'),
+('P456DEF', 5, 'LIBRE'),
+('P456DEF', 6, 'LIBRE'),
+('P456DEF', 7, 'LIBRE'),
+('P456DEF', 8, 'LIBRE'),
+('P456DEF', 9, 'LIBRE'),
+('P456DEF', 10, 'LIBRE'),
+('P789GHI', 1, 'LIBRE'),
+('P789GHI', 2, 'LIBRE'),
+('P789GHI', 3, 'LIBRE'),
+('P789GHI', 4, 'LIBRE'),
+('P789GHI', 5, 'LIBRE'),
+('P789GHI', 6, 'LIBRE'),
+('P789GHI', 7, 'LIBRE'),
+('P789GHI', 8, 'LIBRE'),
+('P789GHI', 9, 'LIBRE'),
+('P789GHI', 10, 'LIBRE');
+
+INSERT INTO asignacion_chofer_bus (no_placa, dpi_personal, estado) VALUES
+('P123ABC', '1234567891236', TRUE),
+('P456DEF', '1234567891237', TRUE);
+
+
+INSERT INTO ruta (codigo_ruta, sucursal_origen, sucursal_destino, distancia_km, precio_boleto, estado) VALUES
+('RUTA001', 'SUC-001', 'SUC-002', 205.30, 75.00, TRUE),
+('RUTA002', 'SUC-002', 'SUC-001', 205.30, 75.00, TRUE),
+('RUTA003', 'SUC-003', 'SUC-001', 60.10,  30.00, TRUE);
+
+INSERT INTO viaje (no_placa, dpi_personal, codigo_ruta, fecha_hora_salida, fecha_hora_llegada, kilometraje_inicial_bus, kilometraje_final_bus, combustible_consumido, depreciacion_bus, monto_total, estado) VALUES
+('P123ABC', '1234567891236', 'RUTA001', '2026-09-15 06:00:00', '2026-09-15 10:30:00', 125000.00, 125205.30, 45.50, 120.00, 3375.00, 'FINALIZADO'),
+('P456DEF', '1234567891237', 'RUTA002', '2026-09-20 07:00:00', '2026-09-20 11:30:00', 98000.00,  NULL,      NULL,  NULL,   3750.00, 'PROGRAMADO');
+
+INSERT INTO cliente (dpi_cliente, nit_cliente, nombre_completo, apellido_completo, telefono, saldo, usuario, contrasenia, estado) VALUES
+('9876543210101', '12345678', 'Sofía María',   'Castillo Reyes', '55502010', 0.00,  'scastillo', '123456s', TRUE),
+('9876543210102', '23456789', 'Diego Rafael',   'Morales Ortiz',  '55502020', 50.00, 'dmorales',  '123456d', TRUE);
+
+INSERT INTO compra (dpi_cliente, tipo_viaje, fecha_hora_compra, monto_total, estado_compra) VALUES
+('9876543210101', 'VIAJE_REGULAR', '2026-09-14 18:20:00', 75.00, 'PAGADO'),
+('9876543210102', 'VIAJE_REGULAR', '2026-09-16 09:00:00', 75.00, 'ABIERTA');
+
+INSERT INTO boleto (id_compra, id_viaje, id_asiento, estado) VALUES
+(1, 1, 1, TRUE),
+(2, 2, 4, TRUE);
+
+

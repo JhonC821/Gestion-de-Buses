@@ -41,7 +41,11 @@
             <div class="container text-center mt-3">
                 <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
             </div>
+            
         </form>
+            <div class="container text-center mt-3">
+                <a href="VistaRegistroCliente.jsp" class="btn btn-success">Registrarse</a>
+            </div>
     </div>
     <div class="container mb-auto" >
         <a href="index-personal.jsp" type="submit" class="btn btn-success">Personal</a>

@@ -155,7 +155,7 @@ public class CrudBus {
         public List<Bus> consultarBusesPosSucursal(Sucursal sucursal) throws AccesoDeDatosException {
         String codigoSucursal = sucursal.getCodigoSucursal();
         List<Bus> listaBuses = new ArrayList<>();
-        String sql = CONSULTAR_TODO_BUS;
+        String sql = CONSULTAR_POR_SUCURSAL;
 
         try (Connection conexion = Conexion.getInstance().getConexion();
              PreparedStatement consultar = conexion.prepareStatement(sql)) {
@@ -222,7 +222,7 @@ public class CrudBus {
                 nuevoBus.setFoto(busObtenido.getBytes("foto"));
                 nuevoBus.setKilometrajeActual(busObtenido.getDouble("kilometraje_actual"));
                 nuevoBus.setEstadoOperativo(EstadoOperativoBus.valueOf(busObtenido.getString("estado_operativo")));
-                nuevoBus.setEstado(busObtenido.getBoolean("estasdo"));
+                nuevoBus.setEstado(busObtenido.getBoolean("estado"));
                 listaBuses.add(nuevoBus);
             }
          

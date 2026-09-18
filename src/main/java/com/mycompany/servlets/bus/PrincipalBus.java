@@ -2,13 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.mycompany.servlets.configuracionsistema;
+package com.mycompany.servlets.bus;
 
-import com.mycompany.Cruds.CrudConfiguracionSistema;
+import com.mycompany.Cruds.CrudBus;
 import com.mycompany.Excepciones.AccesoDeDatosException;
-import com.mycompany.POJOs.ConfiguracionSistema;
+import com.mycompany.POJOs.Bus;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -20,30 +19,25 @@ import java.util.List;
  *
  * @author jonat
  */
-@WebServlet(name = "CargaDeConfiguracionSistema", urlPatterns = {"/CargaDeConfiguracionSistema"})
-public class PrincipalConfiguracionSistema extends HttpServlet {
-
+@WebServlet(name = "CargaDeBus", urlPatterns = {"/CargaDeBus"})
+public class PrincipalBus extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        CrudConfiguracionSistema crudConfiguracion = new CrudConfiguracionSistema();
+        CrudBus crudBus = new CrudBus();
 
         try {
-
-            List<ConfiguracionSistema> listaConfiguraciones = crudConfiguracion.consultarTodasConfiguraciones();
-            request.setAttribute("listaConfiguraciones", listaConfiguraciones);
-            request.getRequestDispatcher("/mvc/adminSistema/VistaConfiguracionSistema.jsp").forward(request, response);
+            List<Bus> listaBuses = crudBus.consultarBuses();
+            request.setAttribute("listaBuses", listaBuses);
+            request.getRequestDispatcher("/mvc/adminSucursal/VistaBus.jsp").forward(request, response);
 
         } catch (AccesoDeDatosException ex) {
-
             request.setAttribute("error", ex.getMessage() + " " + ex.getCause().getMessage());
-            request.getRequestDispatcher("/mvc/adminSistema/VistaConfiguracionSistema.jsp").forward(request, response);
-
+            request.getRequestDispatcher("/mvc/adminSucursal/VistaBus.jsp").forward(request, response);
         }
     }
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

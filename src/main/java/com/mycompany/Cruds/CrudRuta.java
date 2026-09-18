@@ -8,6 +8,7 @@ import com.mycompany.Conexion.Conexion;
 import com.mycompany.POJOs.Ruta;
 import com.mycompany.POJOs.Sucursal;
 import com.mycompany.Excepciones.AccesoDeDatosException;
+import com.mycompany.Excepciones.RegistroExistenteException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,7 +26,7 @@ public class CrudRuta {
     private final String NOMBRE_ENTIDAD = "ruta";
 
     //sql
-    private final String INSERTAR_RUTA = "INSERT INTO " + NOMBRE_ENTIDAD + "(codigo_ruta, sucursal_origen, sucursal_destino, distancia_km, precio_boleto) VALUES(?,?,?,?)";
+    private final String INSERTAR_RUTA = "INSERT INTO " + NOMBRE_ENTIDAD + "(codigo_ruta, sucursal_origen, sucursal_destino, distancia_km, precio_boleto) VALUES(?,?,?,?,?)";
     private final String ACTUALIZAR_RUTA = "UPDATE " + NOMBRE_ENTIDAD + " SET sucursal_origen = ?, sucursal_destino = ?, distancia_km = ?, precio_boleto = ? WHERE codigo_ruta = ?";
     private final String ACTUALIZAR_ESTADO_RUTA = "UPDATE " + NOMBRE_ENTIDAD + " SET estado = ? WHERE codigo_ruta = ?";
 
@@ -38,16 +39,17 @@ public class CrudRuta {
 
     }
 
-    public void insertarRuta(Ruta ruta) throws AccesoDeDatosException{
+    public void insertarRuta(Ruta ruta) throws AccesoDeDatosException, RegistroExistenteException{
 
         String sql = INSERTAR_RUTA;
 
         try (Connection conexion = Conexion.getInstance().getConexion();
              PreparedStatement insertar = conexion.prepareStatement(sql)) {
-            insertar.setString(1, ruta.getSucursalOrigen());
-            insertar.setString(2, ruta.getSucursalDestino());
-            insertar.setDouble(3, ruta.getDistanciaKm());
-            insertar.setDouble(4, ruta.getPrecioBoleto());
+            insertar.setString(1, ruta.getCodigoRuta());
+            insertar.setString(2, ruta.getSucursalOrigen());
+            insertar.setString(3, ruta.getSucursalDestino());
+            insertar.setDouble(4, ruta.getDistanciaKm());
+            insertar.setDouble(5, ruta.getPrecioBoleto());
 
             int filas = insertar.executeUpdate();
             System.out.println("Se inserto: " + filas);
@@ -55,7 +57,6 @@ public class CrudRuta {
         }catch (SQLException ex) {
 
             throw new AccesoDeDatosException("Error al insertar la ruta: ", ex);
-
         }
 
     }

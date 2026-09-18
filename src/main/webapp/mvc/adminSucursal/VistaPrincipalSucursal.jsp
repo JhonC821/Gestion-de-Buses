@@ -9,9 +9,12 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Sucursal</title>
+        <jsp:include page="/includes/resources.jsp"/>
     </head>
     <body>
-        <h1>YA ES TODA WE</h1>
+        <jsp:include page="/includes/headerAdminSucursal.jsp" />
+    
+        <h2>Bienvenido, ${sessionScope.usuario.nombreCompleto} </h2>
     </body>
 </html>

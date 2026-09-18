@@ -59,7 +59,7 @@ public class CrudChofer {
             System.out.println("Se inserto: " + filas);
 
         } catch (SQLIntegrityConstraintViolationException ex) {
-            throw new RegistroExistenteException("Registro ya existente ", ex);
+            throw new RegistroExistenteException("Registro ya existente, un personal cuenta con este dato ", ex);
 
         } catch (SQLException ex) {
 
@@ -135,21 +135,36 @@ public class CrudChofer {
     }
     
     
-    
-    
+   
     public List<Chofer> consultarChoferes() throws AccesoDeDatosException{
         CrudPersonal crudPersonal = new CrudPersonal();
         List<Chofer> listaChofer = new ArrayList<>();
         
-        List<Personal> listaPersonal = crudPersonal.consultarPersonalPorCargo(CargoPersonal.CHOFER);
+        List<Personal> listaPersonal = crudPersonal.consultarPersonalPorCargo(CargoPersonal.CHOFER); //personal ya llnado
+        
         for (Personal personal : listaPersonal) {
             Optional<Chofer> chofer = consultarPorDpi(personal);
             if (chofer.isPresent()) {
+                pasarDatos(personal, chofer.get());
                 listaChofer.add(chofer.get());
             }  
         }
         return listaChofer;
     }
+    
+    public Chofer pasarDatos(Personal personal, Chofer chofer){
+        
+        chofer.setNombreCompleto(personal.getNombreCompleto());
+        chofer.setApellidoCompleto(personal.getApellidoCompleto());
+        chofer.setTelefono(personal.getTelefono());
+        chofer.setCargo(personal.getCargo());
+        chofer.setUsuario(personal.getUsuario());
+        chofer.setContrasenia(personal.getContrasenia());
+        chofer.setEstado(personal.isEstado());
+        
+        return chofer;
+    }
+    
     
     public List<Chofer> consultarChoferesPorSucursal(Sucursal sucursal) throws AccesoDeDatosException{
         CrudPersonal crudPersonal = new CrudPersonal();
@@ -160,6 +175,7 @@ public class CrudChofer {
             Optional<Chofer> chofer = consultarPorDpi(personal);
             if (chofer.isPresent()) {
                 if (chofer.get().getSucursalAsignada().equalsIgnoreCase(sucursal.getCodigoSucursal())) {
+                    pasarDatos(personal, chofer.get());
                     listaChofer.add(chofer.get());
                 } 
             }  

@@ -67,6 +67,7 @@ public class RegistroPersonal extends HttpServlet {
                 //request.setAttribute("ingresoValido", "El personal se agrego correctamente");  
                 sesion.setAttribute("ingresoValido", "El personal se agrego Correctamente");
                 response.sendRedirect(request.getContextPath() + "/CargarDePersonal");
+                
                 return;
             } else{
                 request.setAttribute("error","Las contraseñas NO coinsiden");
